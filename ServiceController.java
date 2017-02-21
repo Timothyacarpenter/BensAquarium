@@ -14,6 +14,7 @@ public class ServiceController {
     ScheduledExecutorService lightExecutor;
     GpioSingleton gpioSingleton = GpioSingleton.getInstance();
 
+
     public void startFanService(){
 
         fanService = Executors.newSingleThreadScheduledExecutor();
@@ -45,6 +46,18 @@ public class ServiceController {
 
     public void shutdownLightService(){
         lightExecutor.shutdown();
+    }
+
+    public void stopAllServices(){
+        this.shutdownFanService();
+        this.shutdownTempService();
+        this.shutdownLightService();
+    }
+
+    public void startAllServices(){
+        this.startLightService();
+        this.startTempService();
+        this.startFanService();
     }
 
 

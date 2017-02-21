@@ -12,27 +12,17 @@ public class BensAquarium {
     public static void main(String[] args) throws InterruptedException, ExecutionException {
 
         System.out.println(GpioSingleton.getInstance().getTempSensor());
+        serviceController.startAllServices();
+        Thread.sleep(10000);
+        GpioSingleton.getSettings().setWaterTempLimit(25);
+        Thread.sleep(10000);
 
-        startAllServices();
-        Thread.sleep(50000);
-
-        stopAllServices();
+        serviceController.stopAllServices();
         System.out.println("Stopping all");
         GpioSingleton.getInstance().shutDownGpioController();
+        GpioSingleton.getSettings().saveAllSettings();
 
 
     }
 
-
-    public static void stopAllServices(){
-        serviceController.shutdownFanService();
-        serviceController.shutdownTempService();
-        serviceController.shutdownLightService();
-    }
-
-    public static void startAllServices(){
-        serviceController.startLightService();
-        serviceController.startTempService();
-        serviceController.startFanService();
-    }
 }

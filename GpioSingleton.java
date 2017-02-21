@@ -9,18 +9,19 @@ import java.util.List;
 /**
  * Created by Timmy on 29/1/17.
  */
-class GpioSingleton {
+public class GpioSingleton {
 
     private static GpioSingleton gpioSingleton;
-    private GpioController gpioController = GpioFactory.getInstance();
-    private FanController fanController = new FanController(gpioController);
-    private LightController lightController = new LightController(gpioController);
-    private TemperatureReader temperatureReader = new TemperatureReader();
-    private FanToggle fanToggle = new FanToggle(temperatureReader);
-    private LightTimer lightTimer = new LightTimer();
-    private W1Master master = new W1Master();
-    private List<W1Device> w1Devices = master.getDevices(TmpDS18B20DeviceType.FAMILY_CODE);
-    private TemperatureSensor temperatureSensor = null;
+    static Settings settings = new Settings();
+    GpioController gpioController = GpioFactory.getInstance();
+    FanController fanController = new FanController(gpioController);
+    LightController lightController = new LightController(gpioController);
+    TemperatureReader temperatureReader = new TemperatureReader();
+    FanToggle fanToggle = new FanToggle(temperatureReader, settings);
+    LightTimer lightTimer = new LightTimer(settings);
+    W1Master master = new W1Master();
+    List<W1Device> w1Devices = master.getDevices(TmpDS18B20DeviceType.FAMILY_CODE);
+    TemperatureSensor temperatureSensor = null;
 
 
 
@@ -66,5 +67,9 @@ class GpioSingleton {
         }
 
         return temperatureSensor.getTemperature();
+    }
+
+    public static Settings getSettings() {
+        return settings;
     }
 }

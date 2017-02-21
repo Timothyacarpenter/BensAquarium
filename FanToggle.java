@@ -1,5 +1,3 @@
-import com.pi4j.io.gpio.GpioController;
-
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -8,10 +6,13 @@ import java.util.concurrent.ExecutionException;
 public class FanToggle implements Runnable {
 
     TemperatureReader temperatureReader;
+    Settings settings;
 
 
-    public FanToggle(TemperatureReader temperatureReader){
+    public FanToggle(TemperatureReader temperatureReader, Settings settings){
         this.temperatureReader = temperatureReader;
+        System.out.println("water temp limit" + settings.getWaterTempLimit());
+        this.settings = settings;
     }
 
 
@@ -20,13 +21,11 @@ public class FanToggle implements Runnable {
         if(temperatureReader.getTemperature().isDone()){
             try {
                 System.out.println(temperatureReader.getTemperature().get().doubleValue());
-                if(temperatureReader.getTemperature().get() > 25){
+                if(temperatureReader.getTemperature().get() > settings.getWaterTempLimit()){
                     GpioSingleton.getInstance().getFanController().turnOnFan1();
-                    GpioSingleton.getInstance().getFanController().turnOnFan2();
                 }
                 else{
                     GpioSingleton.getInstance().getFanController().turnOffFan1();
-                    GpioSingleton.getInstance().getFanController().turnOffFan2();
                 }
             } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
