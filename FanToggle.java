@@ -11,7 +11,6 @@ public class FanToggle implements Runnable {
 
     public FanToggle(TemperatureReader temperatureReader, Settings settings){
         this.temperatureReader = temperatureReader;
-        System.out.println("water temp limit" + settings.getWaterTempLimit());
         this.settings = settings;
     }
 

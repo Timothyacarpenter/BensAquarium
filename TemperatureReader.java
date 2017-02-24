@@ -1,3 +1,7 @@
+import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.beans.value.ObservableValue;
 import java.util.concurrent.*;
 
 /**
@@ -8,9 +12,26 @@ public class TemperatureReader implements Runnable{
 
     Future<Double> future = CompletableFuture.completedFuture(25.0);
 
+    StringProperty temp;
+
+    public TemperatureReader() {
+
+        try {
+            temp = new SimpleStringProperty(String.valueOf(future.get()));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+
+
+    }
+
+
+
     public void checkTemperature(){
 
-        //System.out.println("Checking Temp");
 
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Callable<Double> callable = new Callable<Double>() {
@@ -20,7 +41,20 @@ public class TemperatureReader implements Runnable{
             }
         };
         future = executor.submit(callable);
-        // future.get() returns 2 or raises an exception if the thread dies, so safer
+
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        temp.setValue(String.valueOf(future.get()));
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
         executor.shutdown();
 
     }
@@ -32,6 +66,12 @@ public class TemperatureReader implements Runnable{
     public Future<Double> getTemperature(){
         return future;
     }
+
+    public ObservableValue<String> getTemp(){
+        return temp;
+    }
+
+
 
     @Override
     public void run() {
