@@ -27,6 +27,8 @@ public class GpioSingleton {
     TemperatureSensor temperatureSensor = null;
 
     StringProperty fanStatus = new SimpleStringProperty("");
+    StringProperty normalLightStatus = new SimpleStringProperty("");
+    StringProperty blueLightStatus = new SimpleStringProperty("");
 
 
 
@@ -62,6 +64,14 @@ public class GpioSingleton {
 
     public StringProperty getFanStatus() {
         return fanStatus;
+    }
+
+    public StringProperty getNormalLightStatus() {
+        return normalLightStatus;
+    }
+
+    public StringProperty getBlueLightStatus() {
+        return blueLightStatus;
     }
 
     public LightController getLightController() {

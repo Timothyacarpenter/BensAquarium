@@ -1,6 +1,9 @@
 /**
  * Created by Timmy on 24/1/17.
  */
+import com.pi4j.io.gpio.PinState;
+import com.pi4j.wiringpi.Gpio;
+
 import java.util.Calendar;
 
 public class LightTimer implements Runnable {
@@ -58,6 +61,21 @@ public class LightTimer implements Runnable {
             GpioSingleton.getInstance().getLightController().turnOffLED1();
             GpioSingleton.getInstance().getLightController().turnOffLED2();
             //System.out.println("No lights Should be on");
+        }
+
+
+        if(GpioSingleton.getInstance().getLightController().getLED1().getState().equals(PinState.LOW)){
+            GpioSingleton.getInstance().getNormalLightStatus().setValue("On");
+        }
+        else{
+            GpioSingleton.getInstance().getNormalLightStatus().setValue("Off");
+        }
+
+        if(GpioSingleton.getInstance().getLightController().getLED2().getState().equals(PinState.LOW)){
+            GpioSingleton.getInstance().getBlueLightStatus().setValue("On");
+        }
+        else{
+            GpioSingleton.getInstance().getBlueLightStatus().setValue("Off");
         }
 
         //System.out.println("Finished checking current date");

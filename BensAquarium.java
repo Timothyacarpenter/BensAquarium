@@ -1,20 +1,14 @@
-import com.pi4j.wiringpi.Gpio;
 import javafx.application.Platform;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.application.Application;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
-import java.io.BufferedReader;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -48,6 +42,8 @@ public class BensAquarium extends Application{
         Label fanStatus = new Label("");
         temp.textProperty().bind(GpioSingleton.getInstance().getTemperatureReader().getTemp());
         fanStatus.textProperty().bind(GpioSingleton.getInstance().getFanStatus());
+        normalLightStatus.textProperty().bind(GpioSingleton.getInstance().getNormalLightStatus());
+        blueLightStatus.textProperty().bind(GpioSingleton.getInstance().getBlueLightStatus());
 
         VBox menu = new VBox();
         menu.setPadding(new Insets(10));

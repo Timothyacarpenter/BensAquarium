@@ -40,4 +40,11 @@ public class LightController {
         return LED2.getState().toString();
     }
 
+    public GpioPinDigitalOutput getLED1() {
+        return LED1;
+    }
+
+    public GpioPinDigitalOutput getLED2() {
+        return LED2;
+    }
 }
