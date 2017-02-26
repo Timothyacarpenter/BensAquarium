@@ -1,3 +1,5 @@
+import javafx.application.Platform;
+
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -22,9 +24,23 @@ public class FanToggle implements Runnable {
                 System.out.println(temperatureReader.getTemperature().get().doubleValue());
                 if(temperatureReader.getTemperature().get() > settings.getWaterTempLimit()){
                     GpioSingleton.getInstance().getFanController().turnOnFan1();
+
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            GpioSingleton.getInstance().getFanStatus().setValue("On");
+                        }
+                    });
+
                 }
                 else{
                     GpioSingleton.getInstance().getFanController().turnOffFan1();
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            GpioSingleton.getInstance().getFanStatus().setValue("Off");
+                        }
+                    });
                 }
             } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();

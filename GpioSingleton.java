@@ -4,6 +4,9 @@ import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioFactory;
 import com.pi4j.io.w1.W1Device;
 import com.pi4j.io.w1.W1Master;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 import java.util.List;
 
 /**
@@ -22,6 +25,8 @@ public class GpioSingleton {
     W1Master master = new W1Master();
     List<W1Device> w1Devices = master.getDevices(TmpDS18B20DeviceType.FAMILY_CODE);
     TemperatureSensor temperatureSensor = null;
+
+    StringProperty fanStatus = new SimpleStringProperty("");
 
 
 
@@ -55,6 +60,9 @@ public class GpioSingleton {
         gpioController.shutdown();
     }
 
+    public StringProperty getFanStatus() {
+        return fanStatus;
+    }
 
     public LightController getLightController() {
         return lightController;
